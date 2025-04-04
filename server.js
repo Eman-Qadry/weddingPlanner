@@ -1,14 +1,21 @@
 const express = require('express');
 const bodyparser=require('body-parser');
-const connectDB=require('./config/DB')
+const { swaggerUi, swaggerSpec } = require("./swagger");
+const {error}=require('./middlewares/error')
 const dotenv = require('dotenv');
 const cors = require('cors');
 const  connectDB=require('./config/DB');
+const authRouter=require('./routes/auth');
+const categoriesRouter=require('./routes/categories');
 dotenv.config();
 const app=express();
 app.use(bodyparser.urlencoded({extended:true}));
 app.use(bodyparser.json());
 
+
+
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(
   cors({
@@ -17,7 +24,9 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
-
+app.use('/api/auth',authRouter);
+app.use('/api/categories',categoriesRouter);
+app.use(error);
 app.listen(process.env.PORT,()=>{
     connectDB();
     console.log("server is started on port 3000");
