@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const  connectDB=require('./config/DB');
 const authRouter=require('./routes/auth');
+const vendorRouter=require('./routes/auth');
 const categoriesRouter=require('./routes/categories');
 dotenv.config();
 const app=express();
@@ -26,6 +27,7 @@ app.use(
 );
 app.use('/api/auth',authRouter);
 app.use('/api/categories',categoriesRouter);
+app.use('/api/vendor',vendorRouter);
 app.use(error);
 app.listen(process.env.PORT,()=>{
     connectDB();
