@@ -5,15 +5,15 @@ const crypto=require('crypto');
 const sendEmail=require('../utils/sendEmail');
 const login=async (req,res,next)=>{
     try{
-const {email,password}=req.body;
-const existingUser=await User.findOne({email});
-    if (!existingUser){
-        return res.status(400).json({message:"User not registered  ,you can sign up instead"});
-    }
-    const isMatchedPassword=await bcrypt.compare(password,existingUser.password);
-    if (!isMatchedPassword) return res.status(400).json({ message: "Invalid credentials" });
-    const token=createJWT(existingUser._id);
-    res.cookie('token', token, { httpOnly: true }).json({ message: "Login successful", token });
+        const {email,password}=req.body;
+        const existingUser=await User.findOne({email});
+        if (!existingUser){
+            return res.status(400).json({message:"User not registered  ,you can sign up instead"});
+        }
+        const isMatchedPassword=await bcrypt.compare(password,existingUser.password);
+        if (!isMatchedPassword) return res.status(400).json({ message: "Invalid credentials" });
+        const token=createJWT(existingUser._id);
+        res.cookie('token', token, { httpOnly: true }).json({ message: "Login successful", token });
     }
     catch(err){
         next(err)

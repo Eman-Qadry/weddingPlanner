@@ -1,19 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middlewares/authenticated');
-const {
-  registerVendor,
-  loginVendor,
-  forgotPasswordVendor,
-  resetPasswordWithTokenVendor,
-  updatePasswordVendor,
-} = require('../controllers/vendor');
+const vendorController = require('../controllers/vendor'); // Adjust the path as needed
 
+// Route to create a new product
+router.post('/products', vendorController.createProduct);
 
-router.post('/register', registerVendor);
-router.post('/login', loginVendor);
-router.post('/forgot-password', forgotPasswordVendor);
-router.post('/reset-password/:token', resetPasswordWithTokenVendor);
-router.post('/update-password', auth, updatePasswordVendor);
+// Route to get all products
+router.get('/products', vendorController.getAllProducts);
+
+// Route to get a single product by ID
+router.get('/products/:id', vendorController.getProductById);
+
+// Route to update a product by ID
+router.put('/products/:id', vendorController.updateProduct);
+
+// Route to delete a product by ID
+router.delete('/products/:id', vendorController.deleteProduct);
 
 module.exports = router;
